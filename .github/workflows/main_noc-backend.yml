@@ -3,30 +3,19 @@ name: Build and Deploy Static Website
 on:
   push:
     branches:
-      - main  # Replace with your branch name
+      - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'  # or your preferred version
-
-    - name: Install dependencies
-      run: npm install  # Adjust if using a different package manager
-
-    - name: Build
-      run: npm run build  # Adjust based on your build command
-
-    - name: Deploy to Azure
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: noc-backend  # Replace with your Azure App Service name
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}  # GitHub secret containing the publish profile
-        package: build  # Path to your build directory
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: noc-backend
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: '.'
