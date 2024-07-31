@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Azure SQL Database Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+
+<!-- Trigger Button -->
+
+<!-- Popup Form -->
+<div id="coLenderPopup" style="display: none; position: fixed; top: 20%; left: 50%; transform: translate(-50%, -20%); border: 1px solid #ccc; padding: 20px; background: white;">
+  <h2>Choose Co-Lender</h2>
+  <div>
+    <input type="radio" id="amrit" name="coLender" value="Amrit">
+    <label for="amrit">Amrit</label><br><br>
+    <input type="radio" id="sk" name="coLender" value="S.K.">
+    <label for="sk">S.K.</label><br><br>
+  </div>
+  <button onclick="handleAccept2()">Submit</button>
+  <button onclick="closeCoLenderPopup()">Cancel</button>
+</div>
+
+  <!-- File Upload Form -->
+<div id="file-upload-form" style="display: none;">
+  <form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" id="fileInput" name="file" />
+    <button type="button" onclick="uploadFile()">Upload</button>
+  </form>
+</div>
+
+
+  <!-- Pop-Up Form for Remarks -->
+<div id="remarksPopup" style="display: none; position: fixed; top: 20%; left: 50%; transform: translate(-50%, -20%); border: 1px solid #ccc; padding: 20px; background: white;">
+  <h2>Enter Remarks</h2>
+  <textarea id="remarksInput" rows="4" cols="50"></textarea><br>
+  <button onclick="submitRemarks()">Submit</button>
+  <button onclick="closeRemarksPopup()">Cancel</button>
+</div>
+
+  <div id="editUserForm" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background-color:white; padding:20px; border:1px solid #ccc; z-index:1000;">
+    <h2>Edit User Details</h2>
+    <input type="hidden" id="userId">
+    <label for="name">Name:</label>
+    <input type="text" id="name"><br><br>
+    <label for="mobile_no">Mobile No:</label>
+    <input type="text" id="mobile_no"><br><br>
+    <label for="user_type">User Type:</label>
+    <input type="text" id="user_type"><br><br>
+    <label for="login_id">Login ID:</label>
+    <input type="text" id="login_id"><br><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password"><br><br>
+    <label for="branches_visible">Branches Visible:</label>
+    <input type="text" id="branches_visible"><br><br>
+    <button onclick="submitEditUserForm()">Submit</button>
+    <button onclick="closeEditUserForm()">Cancel</button>
+  </div>
+  
+  <!-- Popup Form -->
+<div id="popupForm" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background-color:white; padding:20px; border:1px solid #ccc; z-index:1000;">
+  <h2>Edit Branch Details</h2>
+  <form id="editForm">
+    <input type="hidden" id="rowId">
+    <label for="branch_name">Branch Name:</label><br>
+    <input type="text" id="branch_name"><br><br>
+    <label for="state">State:</label><br>
+    <input type="text" id="state"><br><br>
+    <label for="city">City:</label><br>
+    <input type="text" id="city"><br><br>
+    <label for="branch_address">Branch Address:</label><br>
+    <input type="text" id="branch_address"><br><br>
+    <label for="contact_no">Contact No:</label><br>
+    <input type="text" id="contact_no"><br><br>
+    <button type="button" onclick="submitEditForm()">Save</button>
+    <button type="button" onclick="closePopupForm()">Cancel</button>
+  </form>
+</div>
+
+  <div class="sidebar">
+    <a href="#dashboard" onclick="loadData('', this)" class="active">Dashboard</a>
+    <a href="#applied" onclick="loadData('Applied', this)">Applied</a>
+    <a href="#pending" onclick="loadData('Pending', this)">Pending</a>
+    <a href="#posted" onclick="loadData('Posted', this)">Posted</a>
+    <a href="#done" onclick="loadData('Done', this)">Done</a>
+    <a href="#rejected" onclick="loadData('Rejected', this)">Rejected</a>
+    <a href="#reapplied" onclick="loadData('ReApplied', this)">ReApplied</a>
+    <a href="#userdetails" onclick="loadData('UserDetails', this)">UserDetails</a>
+    <a href="#branchdetails" onclick="loadData('BranchDetails', this)">BranchDetails</a> 
+  </div>
+  
+  <div class="content" id="content">
+    <h2 id="tab-title">Dashboard</h2>
+    <div id="search-container" class="search-container" style="display: none;">
+      <input type="text" id="search-input" placeholder="Search">
+      <button onclick="searchByAgreementNo()">Search</button>
+    </div>
+    <!-- UserDetails Form -->
+    <div id="userdetails-container" style="display: none;">
+      <h3>Add New User</h3>
+      <form id="userdetails-form">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="text" name="mobile_no" placeholder="Mobile No" required>
+        <input type="text" name="user_type" placeholder="User Type" required>
+        <input type="text" name="login_id" placeholder="Login ID" required>
+        <input type="text" name="password" placeholder="Password" required>
+        <input type="text" name="branches_visible" placeholder="Branches Visible" required>
+        <button type="button" onclick="submitUserDetails()">Submit</button>
+      </form>
+    </div>
+    <div id="branchdetails-container" style="display: none;">
+      <h3>Add New Branch</h3>
+      <form id="branchdetails-form">
+        <input type="text" name="branch_name" placeholder="Branch Name" required>
+        <input type="text" name="state" placeholder="State" required>
+        <input type="text" name="city" placeholder="City" required>
+        <input type="text" name="branch_address" placeholder="Branch Address" required>
+        <input type="text" name="contact_no" placeholder="Contact No" required>
+        <button type="button" onclick="submitBranchDetails()">Submit</button>
+      </form>
+    </div>
+    <table id="data-table">
+      <thead>
+        <tr id="table-header">
+          <!-- Headers will be dynamically added here -->
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <!-- Data rows will be dynamically added here -->
+      </tbody>
+    </table>
+    <div id="file-container" class="file-container" style="display: none;">
+      <input type="file" id="file-input">
+      <button onclick="uploadFile()">Upload CSV</button>
+      <button onclick="downloadData()">Download Data</button>
+      <button onclick="deleteAllRows()">Delete Completed</button>
+      <button id="generateReportButton" onclick="generateReport()">Generate LOG</button>
+    </div>
+  </div>
+
+  <!-- The Modal -->
+  <div id="successModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <p>Uploaded successfully!</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script></body>
+</html>
