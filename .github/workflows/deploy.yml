@@ -20,3 +20,4 @@ jobs:
           app_location: '/' # Path to your app’s code
           api_location: 'api' # Path to your API code (if any)
           output_location: 'build' # Path to your build output directory
+          deployment_action: 'upload' # Specify the action to take: 'upload' or 'deploy'
