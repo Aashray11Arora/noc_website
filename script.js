@@ -1,5 +1,5 @@
 
-let serverUrl = 'http://localhost:3000';
+let serverUrl = 'https://noc-backend-b6ddeyeabaetgtfa.southindia-01.azurewebsites.net';
 async function fetchData(query = '', status = '') {
   const response = await fetch(`${serverUrl}/api/data?q=${query}&status=${status}`);
   const data = await response.json();
@@ -9,8 +9,7 @@ async function fetchData(query = '', status = '') {
 async function generateReport() {
 try {
 // Make a request to the backend endpoint that generates the report
-const response = await fetch('http://localhost:3000/api/generate-report');
-
+const response = await fetch(`${serverUrl}/api/generate-report`);
 // Check if the response is OK
 if (response.ok) {
   // Convert the response to a blob
@@ -64,7 +63,7 @@ populateTable(data, true, status === 'Applied', status === 'Pending', status ===
 async function sendTabName() {
   const tabButton = document.getElementById('tab-button');
   const tabName = tabButton.getAttribute('data-tab');
-  const response = await fetch('http://localhost:3000/api/tabname', {
+  const response = await fetch(`${serverUrl}/api/tabname`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -89,7 +88,7 @@ async function uploadFile() {
   const formData = new FormData();
   formData.append('file', file);
 
-  const response = await fetch('http://localhost:3000/api/upload-csv', {
+  const response = await fetch(`${serverUrl}/api/upload-csv`, {
     method: 'POST',
     body: formData
   });
@@ -125,7 +124,7 @@ await loadData('', document.querySelector('.sidebar a.active'));
 });
 
 async function downloadData() {
-  const response = await fetch('http://localhost:3000/api/report');
+  const response = await fetch(`${serverUrl}/api/report`);
   if (response.ok) {
     const blob = await response.blob();
     const url = window.URL.createObjectURL(blob);
@@ -142,7 +141,7 @@ async function downloadData() {
 }
 
 async function deleteAllRows() {
-  const response = await fetch('http://localhost:3000/api/delete-completed', {
+  const response = await fetch(`${serverUrl}/api/delete-completed`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -286,16 +285,9 @@ data.forEach(row => {
 }
 }
 
-
-
-
-
 function handleFileDownload(agreementNo) {
 window.location.href = `${serverUrl}/api/downloadFile/${agreementNo}`;
 }
-
-
-
 
 function handleFileUpload(row) {
 const fileInput = document.createElement('input');
@@ -314,13 +306,13 @@ formData.append('file', file);
 formData.append('id', row['Loan No'].toString());
 
 try {
-  const response = await fetch('http://localhost:3000/api/uploadFile', {
+  const response = await fetch(`${serverUrl}/api/uploadFile`, {
     method: 'POST',
     body: formData
   });
 
   if (response.ok) {
-    alert('File uploaded successfully');
+    alert(`File uploaded successfully`);
     loadData('Done', document.querySelector('.sidebar a[href="#Done"]'));
   } else {
     alert('Failed to upload file');
@@ -372,7 +364,7 @@ branches_visible
 };
 
 try {
-const response = await fetch('http://localhost:3000/api/editUser', {
+const response = await fetch(`${serverUrl}/api/editUser`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -413,7 +405,7 @@ contact_no
 };
 
 try {
-const response = await fetch('http://localhost:3000/api/editBranch', {
+const response = await fetch(`${serverUrl}/api/editBranch`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -440,6 +432,7 @@ function handleDelete(row, tab) {
 console.log(`Deleting ${tab} row:`, row);
 // Implement delete functionality here
 }
+
 function handleEdit(row, tab) {
 if (tab === 'BranchDetails') {
 document.getElementById('rowId').value = row.id; // Assuming 'id' is the primary key
@@ -484,22 +477,6 @@ currentRejectAgreementNo = agreementNo;
 document.getElementById('remarksPopup').style.display = 'block';
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 async function submitRemarks() {
 const remarks = document.getElementById('remarksInput').value;
 
@@ -509,7 +486,7 @@ return;
 }
 
 try {
-const response = await fetch('http://localhost:3000/api/updateRemarks', {
+const response = await fetch(`${serverUrl}/api/updateRemarks`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -534,8 +511,6 @@ alert('An error occurred while updating remarks');
 }
 }
 
-
-
 async function handleAccept2() {
 const coLender = document.querySelector('input[name="coLender"]:checked')?.value;
 
@@ -550,7 +525,7 @@ return;
 }
 
 try {
-const response = await fetch('http://localhost:3000/api/updateCoLender', {
+const response = await fetch(`${serverUrl}/api/updateCoLender`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -575,44 +550,6 @@ alert('An error occurred while selecting co-lender');
 }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function openCoLenderPopup() {
 document.getElementById('coLenderPopup').style.display = 'block';
 }
@@ -636,9 +573,6 @@ function closeRemarksPopup() {
 document.getElementById('remarksPopup').style.display = 'none';
 }
 
-
-
-
 async function handlePosted(row) {
   const agreementNo = row['Loan No'];
   console.log('Posted:', row);
@@ -646,7 +580,7 @@ async function handlePosted(row) {
 }
 
 async function sendAction(action, agreementNo) {
-  const response = await fetch('http://localhost:3000/api/action', {
+  const response = await fetch(`${serverUrl}/api/action`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -685,7 +619,7 @@ async function submitUserDetails() {
   console.log('User Details:', userDetails);
 
   try {
-    const response = await fetch('http://localhost:3000/api/userdetails', {
+    const response = await fetch(`${serverUrl}/api/userdetails`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -708,6 +642,7 @@ async function submitUserDetails() {
     alert('An error occurred while adding user details');
   }
 }
+
 //change the link here
 async function submitBranchDetails() {
   console.log('Submitting Branch details...');
@@ -731,7 +666,7 @@ async function submitBranchDetails() {
   console.log('Branch Details:', branchDetails);
 
   try {
-    const response = await fetch('http://localhost:3000/api/branchdetails', {
+    const response = await fetch(`${serverUrl}/api/branchdetails`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -837,6 +772,7 @@ try {
 }
 }
 }
+
 async function handleDeleteBranch(id) {
 if (confirm('Are you sure you want to delete this Branch?')) {
 try {
