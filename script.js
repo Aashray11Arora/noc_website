@@ -1,3 +1,4 @@
+
 let serverUrl = 'https://noc-backend-b6ddeyeabaetgtfa.southindia-01.azurewebsites.net';
 async function fetchData(query = '', status = '') {
   const response = await fetch(`${serverUrl}/api/data?q=${query}&status=${status}`);
@@ -16,7 +17,7 @@ if (response.ok) {
 
   // Create a URL for the blob
   const url = window.URL.createObjectURL(blob);
-
+zz
   // Create a temporary link element
   const a = document.createElement('a');
   a.style.display = 'none';
@@ -83,7 +84,7 @@ async function uploadFile() {
     alert('Please select a file first.');
     return;
   }
-
+  
   const formData = new FormData();
   formData.append('file', file);
 
@@ -183,7 +184,7 @@ headers.forEach(header => {
 
 // Create table rows dynamically
 data.forEach(row => {
-
+  
   const tr = document.createElement('tr');
 
   // Add buttons to the first column based on the tab
@@ -194,12 +195,12 @@ data.forEach(row => {
     const acceptButton = document.createElement('button');
     acceptButton.textContent = 'Accept';
     acceptButton.onclick = () => handleAccept(row);
-
+    
     const rejectButton = document.createElement('button');
     rejectButton.textContent = 'Reject';
     rejectButton.onclick = () => handleReject(row);
-
-
+    
+    
 
     emptyTd.appendChild(acceptButton);
     emptyTd.appendChild(rejectButton);
@@ -237,11 +238,11 @@ data.forEach(row => {
     const editButton = document.createElement('button');
     editButton.textContent = 'Edit';
     editButton.onclick = () => showEditUserForm(row, 'UserDetails');
-
+    
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
     deleteButton.onclick = () => handleDeleteUser(row.id);
-
+    
     emptyTd.appendChild(editButton);
     emptyTd.appendChild(deleteButton);
   } else if (isBranchDetailsTab) {
@@ -249,11 +250,11 @@ data.forEach(row => {
     const editButton = document.createElement('button');
     editButton.textContent = 'Edit';
     editButton.onclick = () => handleEdit(row, 'BranchDetails');
-
+    
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
     deleteButton.onclick = () => handleDeleteBranch(row.id);
-
+    
     emptyTd.appendChild(editButton);
     emptyTd.appendChild(deleteButton);
   } else if(isDoneTab){
@@ -596,7 +597,7 @@ async function sendAction(action, agreementNo) {
 
 async function submitUserDetails() {
   console.log('Submitting user details...');
-
+  
   const form = document.getElementById('userdetails-form');
   if (!form) {
     console.error('Form element not found');
@@ -645,7 +646,7 @@ async function submitUserDetails() {
 //change the link here
 async function submitBranchDetails() {
   console.log('Submitting Branch details...');
-
+  
   const form = document.getElementById('branchdetails-form');
   if (!form) {
     console.error('Form element not found');
@@ -702,7 +703,10 @@ const tabTitle = {
 'BranchDetails':'BranchDetails'
 }[status];
 document.getElementById('tab-title').innerText = tabTitle;
-
+document.getElementById('tab-title').innerHTML = `
+        <h3 style="text-align: center; margin-top: 0px;">CA Rohit Thakur</h1>
+    <h3 style="text-align: left;margin-top: 0px;">${tabTitle}</h2>
+`;
 // Map statuses to API request parameters
 const statusMapping = {
 '': '',          // No status filter for Dashboard
